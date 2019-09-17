@@ -16,10 +16,11 @@ const Login = (props) => {
       .then(res => {
         localStorage.setItem('token', res.data.payload)
         setLogging(false)
-        props.history.push("/");
+        props.history.push("/friends");
       })
       .catch(err => console.log(err));
   }
+  
   return (
     <div>
       {isLogging && <img className="spinner" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/3c215736197347.57135ca123427.gif"/>}
