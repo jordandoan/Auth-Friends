@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {axiosWithAuth} from './axiosWithAuth';
+import { baseURL } from './url';
+
 const Login = (props) => {
   let [isLogging, setLogging] = useState(false)
   let [credentials, setCreds] = useState({username: '', password: ''});
@@ -11,8 +13,7 @@ const Login = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLogging(true)
-    const URL = "http://localhost:5000/api/login"
-    axiosWithAuth().post(URL, credentials)
+    axiosWithAuth().post(baseURL + 'login', credentials)
       .then(res => {
         localStorage.setItem('token', res.data.payload)
         setLogging(false)

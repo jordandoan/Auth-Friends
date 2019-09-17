@@ -1,3 +1,13 @@
 .App {
   text-align: center;
 }
+
+.friends-container {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content: center;
+}
+
+.friend-card {
+  width:30%;
+}

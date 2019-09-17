@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import {axiosWithAuth} from './axiosWithAuth';
+import React, { useState, useEffect } from 'react';
+import { axiosWithAuth } from './axiosWithAuth';
 import { baseURL } from './url';
 
-const AddFriend = (props) => {
+const EditFriend = (props) => {
   let [isAdding, setAdding] = useState(false)
-  let [friend, setFriend] = useState({name: '', age: '', email:""});
+  let [friend, setFriend] = useState("");
+
+  useEffect(() => { 
+      axiosWithAuth().get(baseURL + "friends")
+        .then(res => {
+          let person = res.data.find(person => person.id == props.match.params.id);
+          setFriend(person);
+        })
+  }, []);
 
   const handleChange = (event) => {
     setFriend({...friend, [event["target"]["name"]]: event["target"]["value"]} )
@@ -13,7 +21,7 @@ const AddFriend = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setAdding(true)
-    axiosWithAuth().post(baseURL + "friends", friend)
+    axiosWithAuth().put(`${baseURL}friends/${props.match.params.id}`, friend)
       .then(res => {
         setAdding(false)
         props.history.push("/friends");
@@ -30,7 +38,7 @@ const AddFriend = (props) => {
             Name
             <input type="text"
                     name="name"
-                    value={friend.username}
+                    value={friend.name}
                     onChange={(e) => handleChange(e)}
             />
           </div>
@@ -51,7 +59,7 @@ const AddFriend = (props) => {
             />
           </div>
           <button>
-            Add
+            Submit Changes
           </button>
         </form>
       }
@@ -59,4 +67,4 @@ const AddFriend = (props) => {
   )
 }
 
-export default AddFriend;
+export default EditFriend;
